@@ -5,7 +5,7 @@
     document.removeEventListener("keydown", window.__autoBuyer.keyHandler, true);
   }
 
-  const VERSION = "3.1";
+  const VERSION = "3.2";
 
   // ---- Settings you can edit ----
   const CONFIG = {
@@ -128,24 +128,27 @@
         }
       });
 
-      Game.customOptionsMenu.push(function() {
-        try {
-          const menu = l("menu");
-          const div = document.createElement("div");
-          div.className = "subsection";
-          div.innerHTML =
-            '<div class="title">Auto Buyer v' + VERSION + '</div>' +
-            '<div class="listing"><a class="option' + (mod.on ? '' : ' off') +
-              '" onclick="window.__autoBuyer.toggleOn();">Auto Buyer ' + (mod.on ? 'ON' : 'OFF') +
-              '</a><label>Hotkey: B</label></div>' +
-            '<div class="listing"><a class="option" onclick="window.__autoBuyer.cycleMode();">Mode: ' +
-              MODES[mod.mode] + '</a><label>Hotkey: N</label></div>' +
-            '<div class="listing"><label>Next target: ' + (mod.target || "none") + '</label></div>';
-          const subs = menu.querySelectorAll(".subsection");
-          if (subs.length) subs[subs.length - 1].parentNode.insertBefore(div, subs[subs.length - 1]);
-          else menu.appendChild(div);
-        } catch (err) { console.error("[Auto Buyer] menu error:", err); }
-      });
+      // Options menu section (only added if this game version supports it)
+      if (Array.isArray(Game.customOptionsMenu)) {
+        Game.customOptionsMenu.push(function() {
+          try {
+            const menu = l("menu");
+            const div = document.createElement("div");
+            div.className = "subsection";
+            div.innerHTML =
+              '<div class="title">Auto Buyer v' + VERSION + '</div>' +
+              '<div class="listing"><a class="option' + (mod.on ? '' : ' off') +
+                '" onclick="window.__autoBuyer.toggleOn();">Auto Buyer ' + (mod.on ? 'ON' : 'OFF') +
+                '</a><label>Hotkey: B</label></div>' +
+              '<div class="listing"><a class="option" onclick="window.__autoBuyer.cycleMode();">Mode: ' +
+                MODES[mod.mode] + '</a><label>Hotkey: N</label></div>' +
+              '<div class="listing"><label>Next target: ' + (mod.target || "none") + '</label></div>';
+            const subs = menu.querySelectorAll(".subsection");
+            if (subs.length) subs[subs.length - 1].parentNode.insertBefore(div, subs[subs.length - 1]);
+            else menu.appendChild(div);
+          } catch (err) { console.error("[Auto Buyer] menu error:", err); }
+        });
+      }
 
       notify("Auto Buyer v" + VERSION + " loaded", "B = on/off, N = change mode");
     },
