@@ -1,0 +1,1 @@
+# auto-buyer-cookie-clicker-v2
